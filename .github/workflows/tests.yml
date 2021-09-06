@@ -1,0 +1,31 @@
+name: Tests
+on:
+  push:
+    branches:
+      - '*'
+      - '!master'
+      - '!main'
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install dependencies
+        run: "sudo apt-get install libcunit1 libcunit1-doc libcunit1-dev"
+      - name: Compile and run tests
+        run: "gcc uart_test.c uart.c uart.h -L$HOME/local/lib -lcunit -o uart && ./uart | tee tests.out"
+      - name: Split test results
+        run: grep 'Test:' tests.out | jq -R -s -c 'split("\n")' > tests.split.out
+      - name: Fetch test results
+        if: always()
+        run: "echo ::set-output name=results::$(cat tests.split.out | jq '[ .[] | select(length > 0) ]' | jq -r '[.[] | {testWithResult: .}]')"
+        id: fetchTestResults
+      - name: Set repo env var
+        if: always()
+        run: echo "github_repo=$GITHUB_REPOSITORY" >> $GITHUB_ENV
+      - uses: joelwmale/webhook-action@master
+        if: always()
+        with:
+          url: https://app.devskills.co/api/assignment-auto-test-results
+          body: '{"assignmentRepository": "${{ env.github_repo }}","results": [${{ steps.fetchTestResults.outputs.results }}],"tool": "cunit"}'

@@ -74,7 +74,7 @@ Start with [Troubleshooting](https://www.notion.so/Troubleshooting-d18bdb5d2ac34
 
 ## Time estimate
 
-**1-2 hours** depending on your experience level. But don't worry! There is no countdown. This number is for you to plan your time.
+**45 min -2 h** depending on your experience level. But don't worry! There is no countdown. This number is for you to plan your time.
 
 ---
 

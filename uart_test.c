@@ -5,8 +5,8 @@
 
 /* Pointer to the file used by the tests. */
 
-static FILE* temp_file = NULL;
-uint32_t *baseAddress = (uint32_t *) 0xFC000000;
+static FILE *temp_file = NULL;
+uint32_t *base_address = (uint32_t *) 0xFC000000;
 
 
 /* The suite initialization function.
@@ -40,51 +40,52 @@ int clean_suite1(void)
 
 
 /* Simple tests of data written to the memory registries.
- * Same layout for all tests, check that the value assigned to the memory registry is correct
- * and that the write functions work so that we can re assign the value.
+ * Same layout for all tests, check that the value assigned to the
+ * memory registry is correct and that the write functions work so
+ * that we can re assign the value.
  */
 
 void testBRR(void)
 {
-    CU_ASSERT(stub_memread(baseAddress+0x04) == 0x1024);
-    stub_memwrite(baseAddress+0x04,0xF);
-    CU_ASSERT_FALSE(stub_memread(baseAddress+0x04)==0x1024);
+    CU_ASSERT(stub_memread(base_address + 0x04) == 0x1024);
+    stub_memwrite(base_address + 0x04,0xF);
+    CU_ASSERT_FALSE(stub_memread(base_address + 0x04)==0x1024);
 
 }
 
 void testTER(void)
 {
-    CU_ASSERT(stub_memread(baseAddress+0x08) == 0x800000);
-    stub_memwrite(baseAddress+0x08,0xF);
-    CU_ASSERT_FALSE(stub_memread(baseAddress+0x08)==0x800000);
+    CU_ASSERT(stub_memread(base_address + 0x08) == 0x800000);
+    stub_memwrite(base_address + 0x08,0xF);
+    CU_ASSERT_FALSE(stub_memread(base_address + 0x08)==0x800000);
 }
 
 void testRER(void)
 {
-    CU_ASSERT(stub_memread(baseAddress+0xC) == 0x0);
-    stub_memwrite(baseAddress+0xC,0xF);
-    CU_ASSERT_FALSE(stub_memread(baseAddress+0xC)==0x0);
+    CU_ASSERT(stub_memread(base_address + 0xC) == 0x0);
+    stub_memwrite(base_address + 0xC,0xF);
+    CU_ASSERT_FALSE(stub_memread(base_address + 0xC)==0x0);
 }
 
 void testIER(void)
 {
-    CU_ASSERT(stub_memread(baseAddress+0x10) == 0xC000);
-    stub_memwrite(baseAddress+0x10,0xF);
-    CU_ASSERT_FALSE(stub_memread(baseAddress+0x10)==0xC000);
+    CU_ASSERT(stub_memread(base_address + 0x10) == 0xC000);
+    stub_memwrite(base_address + 0x10,0xF);
+    CU_ASSERT_FALSE(stub_memread(base_address + 0x10)==0xC000);
 }
 
 void testTDR(void)
 {
-    CU_ASSERT(stub_memread(baseAddress+0x14) == 0x0);
-    stub_memwrite(baseAddress+0x14,0xF);
-    CU_ASSERT_FALSE(stub_memread(baseAddress+0x14)==0x0);
+    CU_ASSERT(stub_memread(base_address + 0x14) == 0x0);
+    stub_memwrite(base_address + 0x14,0xF);
+    CU_ASSERT_FALSE(stub_memread(base_address + 0x14)==0x0);
 }
 
 void testRDR(void)
 {
-    CU_ASSERT(stub_memread(baseAddress+0x18) == 0x0);
-    stub_memwrite(baseAddress+0x18,0xF);
-    CU_ASSERT_FALSE(stub_memread(baseAddress+0x18)==0x0);
+    CU_ASSERT(stub_memread(base_address + 0x18) == 0x0);
+    stub_memwrite(base_address + 0x18,0xF);
+    CU_ASSERT_FALSE(stub_memread(base_address + 0x18)==0x0);
 }
 
 
@@ -95,8 +96,8 @@ void testRDR(void)
  */
 int main()
 {
-    UART_HANDLE h;
-    init_uart(&h); // Initialises for UART baudate 38400,8,None,1,None
+    uart_config cfg;
+    init_uart(&cfg); // Initialises for UART baudate 38400,8,None,1,None
 
     CU_pSuite pSuite = NULL;
 
